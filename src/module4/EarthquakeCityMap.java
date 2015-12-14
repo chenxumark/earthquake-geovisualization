@@ -1,7 +1,9 @@
 package module4;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import de.fhpotsdam.unfolding.UnfoldingMap;
 import de.fhpotsdam.unfolding.data.Feature;
@@ -20,7 +22,7 @@ import processing.core.PApplet;
 /** EarthquakeCityMap
  * An application with an interactive map displaying earthquake data.
  * Author: UC San Diego Intermediate Software Development MOOC team
- * @author Your name here
+ * @author luochenhuan
  * Date: July 17, 2015
  * */
 public class EarthquakeCityMap extends PApplet {
@@ -76,11 +78,11 @@ public class EarthquakeCityMap extends PApplet {
 		
 		// FOR TESTING: Set earthquakesURL to be one of the testing files by uncommenting
 		// one of the lines below.  This will work whether you are online or offline
-		//earthquakesURL = "test1.atom";
-		//earthquakesURL = "test2.atom";
+//		earthquakesURL = "test1.atom";
+//		earthquakesURL = "test2.atom";
 		
 		// WHEN TAKING THIS QUIZ: Uncomment the next line
-		//earthquakesURL = "quiz1.atom";
+		earthquakesURL = "quiz1.atom";
 		
 		
 		// (2) Reading in earthquake data and geometric properties
@@ -134,7 +136,7 @@ public class EarthquakeCityMap extends PApplet {
 	private void addKey() {	
 		// Remember you can use Processing's graphics methods here
 		fill(255, 250, 240);
-		rect(25, 50, 150, 250);
+		rect(25, 50, 150, 400);
 		
 		fill(0);
 		textAlign(LEFT, CENTER);
@@ -142,16 +144,33 @@ public class EarthquakeCityMap extends PApplet {
 		text("Earthquake Key", 50, 75);
 		
 		fill(color(255, 0, 0));
-		ellipse(50, 125, 15, 15);
-		fill(color(255, 255, 0));
-		ellipse(50, 175, 10, 10);
-		fill(color(0, 0, 255));
-		ellipse(50, 225, 5, 5);
+		triangle(50, 120, 42, 135, 58, 135);
+		
+		fill(color(255, 255, 255));
+		ellipse(50, 155, 15, 15);
+		
+		fill(color(255, 255, 255));
+		rect(45, 178, 12, 12);
 		
 		fill(0, 0, 0);
-		text("5.0+ Magnitude", 75, 125);
-		text("4.0+ Magnitude", 75, 175);
-		text("Below 4.0", 75, 225);
+		text("Size ~ Magnitude", 45, 210);
+		
+		text("City Marker", 75, 125);
+		text("Land Quake", 75, 155);
+		text("Ocean Quake", 75, 185);
+		
+		fill(color(255, 255, 0));
+		ellipse(50, 260, 15, 15);
+		fill(color(0, 0, 255));
+		ellipse(50, 280, 15, 15);
+		fill(color(255, 0, 0));
+		ellipse(50, 300, 15, 15);
+		
+		fill(0, 0, 0);
+		text("Shallow", 75, 260);
+		text("Intermediate", 75, 280);
+		text("Deep", 75, 300);
+		
 	}
 
 	
@@ -165,7 +184,11 @@ public class EarthquakeCityMap extends PApplet {
 		// IMPLEMENT THIS: loop over all countries to check if location is in any of them
 		
 		// TODO: Implement this method using the helper method isInCountry
-		
+		for (Marker m : countryMarkers){
+			if (isInCountry(earthquake, m)){
+				return true;
+			}
+		}
 		// not inside any country
 		return false;
 	}
@@ -179,6 +202,21 @@ public class EarthquakeCityMap extends PApplet {
 	private void printQuakes() 
 	{
 		// TODO: Implement this method
+		int oceanquake = quakeMarkers.size(); 
+		for (Marker country : countryMarkers){
+			int landquake=0;
+			for(Marker quake : quakeMarkers) {
+				if (quake.getProperty("country")!=null && quake.getProperty("country").equals(country.getProperty("name"))){
+					landquake++;
+				}
+				
+			}//end inner for
+			oceanquake -= landquake;
+			if (landquake != 0)
+				System.out.println((String)country.getProperty("name") + ": " + landquake);
+		}
+		System.out.println("OCEAN QUAKES: " + oceanquake);
+		
 	}
 	
 	

@@ -4,6 +4,7 @@ import de.fhpotsdam.unfolding.data.Feature;
 import de.fhpotsdam.unfolding.data.PointFeature;
 import de.fhpotsdam.unfolding.geo.Location;
 import de.fhpotsdam.unfolding.marker.SimplePointMarker;
+import processing.core.PConstants;
 import processing.core.PGraphics;
 
 /** Implements a visual marker for cities on an earthquake map
@@ -43,6 +44,14 @@ public class CityMarker extends SimplePointMarker {
 		pg.pushStyle();
 		
 		// TODO: Add code to draw a triangle to represent the CityMarker
+		pg.fill(255, 0, 0);
+		pg.stroke(255, 0, 0);
+//		pg.scale(1.2f);
+		pg.beginShape(PConstants.TRIANGLE);
+		pg.vertex(x, y);
+		pg.vertex(x-5, y+5);
+		pg.vertex(x+5, y+5);
+		pg.endShape(PConstants.TRIANGLE);
 		
 		// Restore previous drawing style
 		pg.popStyle();
